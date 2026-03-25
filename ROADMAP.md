@@ -3,11 +3,11 @@
 This project is a starting point for a powerful, user-friendly weekly planner. Here are potential future features and improvements:
 
 ## Phase 2: User Experience Enhancements
-- [ ] **Task Resizing**: Direct drag-to-resize on the bottom edge of task cards to adjust duration.
-- [ ] **Color Coding**: Allow users to assign colors to tasks or categories for better visual organization.
-- [ ] **Keyboard Shortcuts**: Common actions like `N` for new task, `Esc` to close modals, and `Ctrl+Z` to undo moves.
-- [ ] **Dark Mode**: Support for system-wide dark mode preferences.
-- [ ] **Tooltips & Onboarding**: Guided tour for new users to explain the drag-and-drop mechanics.
+- [x] **Task Resizing**: Direct drag-to-resize on the bottom edge of task cards to adjust duration.
+- [x] **Color Coding**: Allow users to assign colors to tasks or categories for better visual organization.
+- [x] **Keyboard Shortcuts**: Common actions like `N` for new task, `Esc` to close modals, and `Ctrl+Z` to undo moves.
+- [x] **Dark Mode**: Support for system-wide dark mode preferences.
+- [x] **Tooltips & Onboarding**: Guided tour for new users to explain the drag-and-drop mechanics.
 
 ## Phase 3: Advanced Functionality
 - [ ] **Recurring Tasks**: Setup tasks that repeat daily, weekly (e.g., every Tuesday), or on specific days.
