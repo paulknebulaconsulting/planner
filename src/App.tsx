@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { addDays, format } from 'date-fns'
-import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Calendar, ChevronLeft, ChevronRight, Moon, Sun } from 'lucide-react'
 import { DragProvider } from './context/DragContext'
 import { TaskBin } from './components/TaskBin'
 import { TimeColumn } from './components/TimeColumn'
@@ -8,6 +8,8 @@ import { DayColumn } from './components/DayColumn'
 import { DragPreview } from './components/DragPreview'
 import { EditTaskModal } from './components/EditTaskModal'
 import { usePlannerStore, type MasterTask, type TaskInstance } from './store/usePlannerStore'
+import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
+import { useTheme } from './context/ThemeContext'
 
 function App() {
   const {
@@ -19,36 +21,58 @@ function App() {
     resetToToday,
   } = usePlannerStore()
 
+  const { theme, toggleTheme } = useTheme()
+
   const [editingData, setEditingData] = useState<{ task?: MasterTask; instance?: TaskInstance } | null>(null)
+
+  // Keyboard shortcuts
+  useKeyboardShortcuts({
+    onNewTask: () => setEditingData({ task: undefined }),
+    onCloseModal: () => setEditingData(null),
+  })
 
   const weekStart = new Date(currentWeekStart)
   const weekDays = Array.from({ length: 5 }, (_, i) => addDays(weekStart, i))
 
   return (
     <DragProvider>
-      <div className="flex flex-col h-screen bg-gray-100 overflow-hidden font-sans">
+      <div className={`flex flex-col h-screen overflow-hidden font-sans ${theme === 'dark' ? 'dark' : ''}`} style={{
+        backgroundColor: theme === 'dark' ? '#1F2937' : '#F3F4F6',
+        color: theme === 'dark' ? '#F3F4F6' : '#111827',
+      }}>
         {/* Header */}
-        <header className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between shadow-sm flex-shrink-0">
+        <header style={{
+          backgroundColor: theme === 'dark' ? '#111827' : '#FFFFFF',
+          borderBottomColor: theme === 'dark' ? '#374151' : '#E5E7EB',
+        }} className="border-b px-6 py-3 flex items-center justify-between shadow-sm flex-shrink-0">
           <div className="flex items-center gap-4">
             <h1 className="text-xl font-bold text-blue-600 flex items-center gap-2">
               <Calendar size={22} />
               Weekly Planner
             </h1>
-            <div className="flex items-center bg-gray-100 rounded-lg p-0.5">
-              <button onClick={prevWeek} className="p-1.5 hover:bg-white hover:shadow-sm rounded-md transition-all">
+            <div style={{ backgroundColor: theme === 'dark' ? '#374151' : '#F3F4F6' }} className="flex items-center rounded-lg p-0.5">
+              <button onClick={prevWeek} className="p-1.5 hover:shadow-sm rounded-md transition-all" style={{ backgroundColor: theme === 'dark' ? '#374151' : '#F3F4F6' }}>
                 <ChevronLeft size={18} />
               </button>
-              <button onClick={resetToToday} className="px-3 py-1 text-sm font-medium hover:bg-white hover:shadow-sm rounded-md transition-all">
+              <button onClick={resetToToday} className="px-3 py-1 text-sm font-medium hover:shadow-sm rounded-md transition-all" style={{ backgroundColor: theme === 'dark' ? '#374151' : '#F3F4F6' }}>
                 Today
               </button>
-              <button onClick={nextWeek} className="p-1.5 hover:bg-white hover:shadow-sm rounded-md transition-all">
+              <button onClick={nextWeek} className="p-1.5 hover:shadow-sm rounded-md transition-all" style={{ backgroundColor: theme === 'dark' ? '#374151' : '#F3F4F6' }}>
                 <ChevronRight size={18} />
               </button>
             </div>
-            <span className="font-semibold text-gray-600 text-sm">
+            <span className="font-semibold text-sm" style={{ color: theme === 'dark' ? '#9CA3AF' : '#4B5563' }}>
               Week of {format(weekStart, 'MMM d, yyyy')}
             </span>
           </div>
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-lg hover:bg-opacity-80 transition-all"
+            style={{ backgroundColor: theme === 'dark' ? '#374151' : '#F3F4F6' }}
+            title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+          >
+            {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+          </button>
         </header>
 
         <div className="flex flex-1 overflow-hidden">
@@ -56,7 +80,10 @@ function App() {
 
           {/* Calendar grid — scrollable */}
           <div className="flex-1 overflow-auto">
-            <div className="flex bg-white m-3 rounded-xl shadow-inner border border-gray-200 min-w-fit">
+            <div style={{
+              backgroundColor: theme === 'dark' ? '#1F2937' : '#FFFFFF',
+              borderColor: theme === 'dark' ? '#374151' : '#E5E7EB',
+            }} className="flex m-3 rounded-xl shadow-inner border min-w-fit">
               <TimeColumn />
               {weekDays.map((day) => {
                 const dayStr = day.toISOString().split('T')[0]

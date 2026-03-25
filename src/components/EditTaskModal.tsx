@@ -3,6 +3,19 @@ import { usePlannerStore } from '../store/usePlannerStore'
 import type { MasterTask, TaskInstance } from '../store/usePlannerStore'
 import { X } from 'lucide-react'
 
+const COLORS = [
+  '#FF6B6B', // Red
+  '#FFA07A', // Light Coral
+  '#FFD93D', // Yellow
+  '#6BCB77', // Green
+  '#4D96FF', // Blue
+  '#9D4EDD', // Purple
+  '#FF006E', // Pink
+  '#FB5607', // Orange
+  '#00B4D8', // Cyan
+  '#808080', // Gray
+]
+
 interface EditTaskModalProps {
   task?: MasterTask // For creating/editing master tasks
   instance?: TaskInstance // For editing specific instances
@@ -14,22 +27,19 @@ export function EditTaskModal({ task, instance, onClose }: EditTaskModalProps) {
   
   const [title, setTitle] = useState(task?.title || '')
   const [description, setDescription] = useState(task?.description || '')
+  const [color, setColor] = useState(task?.color || COLORS[0])
   const [duration, setDuration] = useState(instance?.duration?.toString() || '1')
 
   const handleSave = () => {
     if (instance) {
-      // Editing an instance (only duration can be changed here if title/desc are from master)
-      // but if we edit title/desc here, should we update the master too? 
-      // User said "duration" should be removed from initial creation. 
-      // Let's assume we update the master title/desc if they change.
-      updateMasterTask(instance.masterTaskId, { title, description })
+      updateMasterTask(instance.masterTaskId, { title, description, color })
       updateInstance(instance.id, { duration: parseFloat(duration) || 1 })
     } else if (task) {
       // Editing an existing master task
-      updateMasterTask(task.id, { title, description })
+      updateMasterTask(task.id, { title, description, color })
     } else {
       // Creating a new master task
-      addMasterTask({ title, description })
+      addMasterTask({ title, description, color })
     }
     onClose()
   }
@@ -67,6 +77,22 @@ export function EditTaskModal({ task, instance, onClose }: EditTaskModalProps) {
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all h-24 resize-none"
               placeholder="Add details..."
             />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Color</label>
+            <div className="flex gap-2 flex-wrap">
+              {COLORS.map((c) => (
+                <button
+                  key={c}
+                  onClick={() => setColor(c)}
+                  style={{ backgroundColor: c }}
+                  className={`w-8 h-8 rounded-lg transition-transform ${
+                    color === c ? 'ring-2 ring-offset-2 ring-gray-400 scale-110' : 'hover:scale-105'
+                  }`}
+                />
+              ))}
+            </div>
           </div>
 
           {instance && (

@@ -6,6 +6,7 @@ export interface MasterTask {
   id: string
   title: string
   description?: string
+  color?: string // hex color like #FF6B6B
 }
 
 export interface TaskInstance {

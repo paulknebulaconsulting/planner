@@ -31,14 +31,18 @@ export function DragPreview() {
         pointerEvents: 'none',
         zIndex: 9999,
         transform: 'rotate(1.5deg)',
+        backgroundColor: `${masterTask.color || '#3B82F6'}20`,
+        borderColor: masterTask.color || '#3B82F6',
       }}
-      className="bg-blue-100 border-2 border-blue-500 rounded-lg shadow-2xl flex flex-col p-2 overflow-hidden opacity-90"
+      className="border-2 rounded-lg shadow-2xl flex flex-col p-2 overflow-hidden opacity-90"
     >
-      <span className="font-bold text-xs text-blue-900 truncate">{masterTask.title}</span>
+      <span className="font-bold text-xs truncate" style={{ color: masterTask.color || '#1F2937' }}>
+        {masterTask.title}
+      </span>
       {height >= 40 && source.kind === 'grid' && (
         <div className="flex items-center gap-1 mt-0.5">
-          <Clock size={9} className="text-blue-500 flex-shrink-0" />
-          <span className="text-[9px] text-blue-600">
+          <Clock size={9} style={{ color: masterTask.color || '#3B82F6' }} className="flex-shrink-0" />
+          <span className="text-[9px]" style={{ color: masterTask.color || '#3B82F6' }}>
             {formatTime(source.instance.startHour)}–{formatTime(source.instance.startHour + duration)}
           </span>
         </div>

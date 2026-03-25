@@ -91,31 +91,52 @@ export function GridTask({ masterTask, instance, onEdit }: GridTaskProps) {
 
   return (
     <div
-      style={{ top, height, left: 2, right: 2, position: 'absolute' }}
       className={[
-        'bg-blue-100 border border-blue-400 rounded-lg shadow-sm group flex flex-col overflow-hidden',
-        'select-none touch-none',
+        'rounded-lg shadow-sm group flex flex-col overflow-hidden select-none touch-none',
         isBeingDragged ? 'opacity-20' : 'opacity-100',
         !isDragging && !isResizing ? 'cursor-grab' : '',
       ].join(' ')}
+      style={{
+        top,
+        height,
+        left: 2,
+        right: 2,
+        position: 'absolute',
+        backgroundColor: `${masterTask.color || '#3B82F6'}20`,
+        borderColor: masterTask.color || '#3B82F6',
+        borderWidth: '2px',
+      }}
       onPointerDown={handleBodyPointerDown}
     >
       {/* Top resize handle */}
       <div
-        style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 8, zIndex: 10, cursor: 'ns-resize' }}
-        className="hover:bg-blue-400/40 rounded-t-lg transition-colors"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 8,
+          zIndex: 10,
+          cursor: 'ns-resize',
+          backgroundColor: `${masterTask.color || '#3B82F6'}40`,
+        }}
+        className="hover:opacity-60 rounded-t-lg transition-opacity"
         onPointerDown={(e) => handleResizePointerDown(e, 'top')}
       />
 
       {/* Content */}
       <div className="flex-1 px-2 pt-3 pb-1 flex flex-col min-h-0">
         <div className="flex items-start justify-between gap-1">
-          <span className="font-semibold text-xs text-blue-900 truncate leading-tight flex-1">
+          <span
+            className="font-semibold text-xs truncate leading-tight flex-1"
+            style={{ color: masterTask.color || '#1F2937' }}
+          >
             {masterTask.title}
           </span>
           <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
             <button
-              className="p-0.5 text-blue-500 hover:bg-blue-200 rounded"
+              className="p-0.5 hover:bg-gray-200 rounded"
+              style={{ color: masterTask.color || '#3B82F6' }}
               onPointerDown={(e) => e.stopPropagation()}
               onClick={(e) => { e.stopPropagation(); onEdit(masterTask, instance) }}
             >
@@ -133,15 +154,15 @@ export function GridTask({ masterTask, instance, onEdit }: GridTaskProps) {
 
         {height >= 48 && (
           <div className="flex items-center gap-1 mt-0.5">
-            <Clock size={9} className="text-blue-500 flex-shrink-0" />
-            <span className="text-[9px] text-blue-600">
+            <Clock size={9} style={{ color: masterTask.color || '#3B82F6' }} className="flex-shrink-0" />
+            <span className="text-[9px]" style={{ color: masterTask.color || '#3B82F6' }}>
               {formatTime(instance.startHour)}–{formatTime(instance.startHour + instance.duration)}
             </span>
           </div>
         )}
 
         {height >= 64 && masterTask.description && (
-          <p className="text-[10px] text-blue-700/70 mt-1 line-clamp-2 leading-tight">
+          <p className="text-[10px] mt-1 line-clamp-2 leading-tight" style={{ color: `${masterTask.color || '#1F2937'}80` }}>
             {masterTask.description}
           </p>
         )}
@@ -149,8 +170,17 @@ export function GridTask({ masterTask, instance, onEdit }: GridTaskProps) {
 
       {/* Bottom resize handle */}
       <div
-        style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 8, zIndex: 10, cursor: 'ns-resize' }}
-        className="hover:bg-blue-400/40 rounded-b-lg transition-colors"
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: 8,
+          zIndex: 10,
+          cursor: 'ns-resize',
+          backgroundColor: `${masterTask.color || '#3B82F6'}40`,
+        }}
+        className="hover:opacity-60 rounded-b-lg transition-opacity"
         onPointerDown={(e) => handleResizePointerDown(e, 'bottom')}
       />
     </div>

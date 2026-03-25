@@ -26,20 +26,24 @@ export function TaskBin({ onEdit }: TaskBinProps) {
         {masterTasks.map((task) => (
           <div
             key={task.id}
-            className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm group hover:border-blue-300 hover:shadow-md transition-all select-none touch-none cursor-grab active:cursor-grabbing"
+            className="bg-white border rounded-lg p-3 shadow-sm group hover:shadow-md transition-all select-none touch-none cursor-grab active:cursor-grabbing"
+            style={{ borderColor: task.color || '#E5E7EB' }}
             onPointerDown={(e) => startBinDrag(task, e)}
           >
             <div className="flex items-start gap-2">
               <GripVertical size={14} className="text-gray-300 mt-0.5 flex-shrink-0" />
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-800 truncate">{task.title}</p>
+                <p className="text-sm font-semibold truncate" style={{ color: task.color || '#1F2937' }}>
+                  {task.title}
+                </p>
                 {task.description && (
                   <p className="text-xs text-gray-400 truncate mt-0.5">{task.description}</p>
                 )}
               </div>
               <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
                 <button
-                  className="p-1 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded"
+                  className="p-1 hover:rounded"
+                  style={{ color: task.color || '#9CA3AF' }}
                   onPointerDown={(e) => e.stopPropagation()}
                   onClick={(e) => { e.stopPropagation(); onEdit(task) }}
                 >
