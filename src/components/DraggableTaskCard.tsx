@@ -27,9 +27,9 @@ export function DraggableTaskCard({ masterTask, instance, onEdit, isPastDay, isA
     },
   })
 
-  // Resize handling
+  // Resize handling - track original values to avoid jitter from stale instance data
   const startY = useRef(0)
-  const startVal = useRef(0)
+  const startStartHour = useRef(0)
   const startDuration = useRef(0)
 
   const handleResizeStart = (e: React.MouseEvent, type: 'top' | 'bottom') => {
@@ -39,7 +39,7 @@ export function DraggableTaskCard({ masterTask, instance, onEdit, isPastDay, isA
     
     setIsResizing(type)
     startY.current = e.clientY
-    startVal.current = type === 'top' ? instance.startHour : instance.duration
+    startStartHour.current = instance.startHour
     startDuration.current = instance.duration
   }
 
@@ -51,15 +51,17 @@ export function DraggableTaskCard({ masterTask, instance, onEdit, isPastDay, isA
       const actualDeltaHours = deltaY / 64
       
       if (isResizing === 'bottom') {
+        // Calculate from original duration to avoid compounding errors
         const newDuration = Math.max(0.5, Math.round((startDuration.current + actualDeltaHours) * 2) / 2)
         if (newDuration !== instance.duration) {
           updateInstance(instance.id, { duration: newDuration })
         }
       } else if (isResizing === 'top') {
-        const newStartHour = Math.max(7, Math.min(18.5, Math.round((startVal.current + actualDeltaHours) * 2) / 2))
-        const actualDelta = newStartHour - instance.startHour
+        // Calculate from original start hour to avoid compounding errors
+        const newStartHour = Math.max(7, Math.min(18.5, Math.round((startStartHour.current + actualDeltaHours) * 2) / 2))
+        const actualDelta = newStartHour - startStartHour.current
         if (actualDelta !== 0) {
-          const newDuration = Math.max(0.5, instance.duration - actualDelta)
+          const newDuration = Math.max(0.5, startDuration.current - actualDelta)
           updateInstance(instance.id, { 
             startHour: newStartHour,
             duration: newDuration

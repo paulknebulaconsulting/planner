@@ -26,7 +26,9 @@ interface TaskCardProps {
   isPastDay?: boolean
   isAnyTaskDragging?: boolean
   style?: React.CSSProperties
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   attributes?: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   listeners?: any
 }
 
@@ -58,6 +60,8 @@ export const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(({
     height: instance ? `${instance.duration * 4}rem` : undefined,
     zIndex: isActuallyFloating || isResizing ? 100 : (isDragging ? 0 : undefined),
     width: isOverlay ? '14rem' : undefined,
+    // Only apply transform from passedStyle; don't let it combine with top/height transitions
+    transform: passedStyle?.transform,
   }
 
   return (
@@ -68,8 +72,8 @@ export const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(({
       {...attributes}
       className={cn(
         'bg-white border border-gray-200 rounded-lg shadow-sm group flex flex-col',
-        // Disable transition during drag to ensure instant repositioning for animation target
-        (!isDragging && !isOverlay && !isResizing) && 'transition-all duration-200',
+        // Only apply transitions when not being manipulated by dnd-kit
+        !(isDragging || isOverlay || isResizing) && 'transition-all duration-200',
         isDragging && 'opacity-0 pointer-events-none', // Hide source, prevent interaction
         isOverlay && 'opacity-100 border-blue-500 ring-4 ring-blue-100 shadow-2xl scale-105 rotate-1 cursor-grabbing z-[100]',
         (isAnyTaskDragging && !isOverlay) && 'pointer-events-none', // Allow drop-through
