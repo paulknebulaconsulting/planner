@@ -7,6 +7,7 @@ import { TimeColumn } from './components/TimeColumn'
 import { DayColumn } from './components/DayColumn'
 import { DragPreview } from './components/DragPreview'
 import { EditTaskModal } from './components/EditTaskModal'
+import { Tooltip } from './components/Tooltip'
 import { usePlannerStore, type MasterTask, type TaskInstance } from './store/usePlannerStore'
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
 import { useTheme } from './context/ThemeContext'
@@ -51,28 +52,35 @@ function App() {
               Weekly Planner
             </h1>
             <div style={{ backgroundColor: theme === 'dark' ? '#374151' : '#F3F4F6' }} className="flex items-center rounded-lg p-0.5">
-              <button onClick={prevWeek} className="p-1.5 hover:shadow-sm rounded-md transition-all" style={{ backgroundColor: theme === 'dark' ? '#374151' : '#F3F4F6' }}>
-                <ChevronLeft size={18} />
-              </button>
-              <button onClick={resetToToday} className="px-3 py-1 text-sm font-medium hover:shadow-sm rounded-md transition-all" style={{ backgroundColor: theme === 'dark' ? '#374151' : '#F3F4F6' }}>
-                Today
-              </button>
-              <button onClick={nextWeek} className="p-1.5 hover:shadow-sm rounded-md transition-all" style={{ backgroundColor: theme === 'dark' ? '#374151' : '#F3F4F6' }}>
-                <ChevronRight size={18} />
-              </button>
+              <Tooltip content="Previous week">
+                <button onClick={prevWeek} className="p-1.5 hover:shadow-sm rounded-md transition-all" style={{ backgroundColor: theme === 'dark' ? '#374151' : '#F3F4F6' }}>
+                  <ChevronLeft size={18} />
+                </button>
+              </Tooltip>
+              <Tooltip content="Go to today (Shortcut: Today)">
+                <button onClick={resetToToday} className="px-3 py-1 text-sm font-medium hover:shadow-sm rounded-md transition-all" style={{ backgroundColor: theme === 'dark' ? '#374151' : '#F3F4F6' }}>
+                  Today
+                </button>
+              </Tooltip>
+              <Tooltip content="Next week">
+                <button onClick={nextWeek} className="p-1.5 hover:shadow-sm rounded-md transition-all" style={{ backgroundColor: theme === 'dark' ? '#374151' : '#F3F4F6' }}>
+                  <ChevronRight size={18} />
+                </button>
+              </Tooltip>
             </div>
             <span className="font-semibold text-sm" style={{ color: theme === 'dark' ? '#9CA3AF' : '#4B5563' }}>
               Week of {format(weekStart, 'MMM d, yyyy')}
             </span>
           </div>
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-lg hover:bg-opacity-80 transition-all"
-            style={{ backgroundColor: theme === 'dark' ? '#374151' : '#F3F4F6' }}
-            title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-          >
-            {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
-          </button>
+          <Tooltip content={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}>
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg hover:bg-opacity-80 transition-all"
+              style={{ backgroundColor: theme === 'dark' ? '#374151' : '#F3F4F6' }}
+            >
+              {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+            </button>
+          </Tooltip>
         </header>
 
         <div className="flex flex-1 overflow-hidden">

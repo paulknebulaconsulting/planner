@@ -1,6 +1,7 @@
 import { usePlannerStore, type MasterTask } from '../store/usePlannerStore'
 import { useDrag } from '../context/DragContext'
 import { Plus, Edit2, Trash2, GripVertical } from 'lucide-react'
+import { Tooltip } from './Tooltip'
 
 interface TaskBinProps {
   onEdit: (task?: MasterTask) => void
@@ -14,12 +15,14 @@ export function TaskBin({ onEdit }: TaskBinProps) {
     <div className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col h-full overflow-hidden flex-shrink-0">
       <div className="p-4 border-b border-gray-200 flex items-center justify-between">
         <h2 className="font-bold text-gray-700">Tasks</h2>
-        <button
-          onClick={() => onEdit()}
-          className="p-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-        >
-          <Plus size={18} />
-        </button>
+        <Tooltip content="Create new task (Shortcut: N)">
+          <button
+            onClick={() => onEdit()}
+            className="p-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+          >
+            <Plus size={18} />
+          </button>
+        </Tooltip>
       </div>
 
       <div className="flex-1 p-3 space-y-2 overflow-y-auto">
@@ -41,26 +44,30 @@ export function TaskBin({ onEdit }: TaskBinProps) {
                 )}
               </div>
               <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
-                <button
-                  className="p-1 hover:rounded"
-                  style={{ color: task.color || '#9CA3AF' }}
-                  onPointerDown={(e) => e.stopPropagation()}
-                  onClick={(e) => { e.stopPropagation(); onEdit(task) }}
-                >
-                  <Edit2 size={11} />
-                </button>
-                <button
-                  className="p-1 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded"
-                  onPointerDown={(e) => e.stopPropagation()}
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    if (confirm(`Delete "${task.title}" and all its scheduled instances?`)) {
-                      deleteMasterTask(task.id)
-                    }
-                  }}
-                >
-                  <Trash2 size={11} />
-                </button>
+                <Tooltip content="Edit task">
+                  <button
+                    className="p-1 hover:rounded"
+                    style={{ color: task.color || '#9CA3AF' }}
+                    onPointerDown={(e) => e.stopPropagation()}
+                    onClick={(e) => { e.stopPropagation(); onEdit(task) }}
+                  >
+                    <Edit2 size={11} />
+                  </button>
+                </Tooltip>
+                <Tooltip content="Delete task">
+                  <button
+                    className="p-1 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded"
+                    onPointerDown={(e) => e.stopPropagation()}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      if (confirm(`Delete "${task.title}" and all its scheduled instances?`)) {
+                        deleteMasterTask(task.id)
+                      }
+                    }}
+                  >
+                    <Trash2 size={11} />
+                  </button>
+                </Tooltip>
               </div>
             </div>
           </div>
