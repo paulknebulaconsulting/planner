@@ -13,10 +13,9 @@ interface DayColumnProps {
   dayDate: Date
   instances: { instance: TaskInstance; master: MasterTask }[]
   onEdit: (task: MasterTask, instance: TaskInstance) => void
-  isFirstDay: boolean
 }
 
-export function DayColumn({ dayDate, instances, onEdit, isFirstDay }: DayColumnProps) {
+export function DayColumn({ dayDate, instances, onEdit }: DayColumnProps) {
   const { isDragging, source, dropTarget, setDropTarget } = useDrag()
   const containerRef = useRef<HTMLDivElement>(null)
   const dayDateStr = dayDate.toISOString().split('T')[0]
@@ -80,11 +79,6 @@ export function DayColumn({ dayDate, instances, onEdit, isFirstDay }: DayColumnP
               className="absolute left-0 right-0 border-b border-gray-100"
               style={{ top: PX_PER_HOUR / 2 }}
             />
-            {isFirstDay && (
-              <span className="absolute -top-2 left-1 text-[10px] text-gray-400 font-medium bg-white leading-none px-0.5 z-10">
-                {format(new Date().setHours(h, 0), 'HH:mm')}
-              </span>
-            )}
           </div>
         ))}
 

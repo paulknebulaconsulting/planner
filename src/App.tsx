@@ -3,6 +3,7 @@ import { addDays, format } from 'date-fns'
 import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react'
 import { DragProvider } from './context/DragContext'
 import { TaskBin } from './components/TaskBin'
+import { TimeColumn } from './components/TimeColumn'
 import { DayColumn } from './components/DayColumn'
 import { DragPreview } from './components/DragPreview'
 import { EditTaskModal } from './components/EditTaskModal'
@@ -56,7 +57,8 @@ function App() {
           {/* Calendar grid — scrollable */}
           <div className="flex-1 overflow-auto">
             <div className="flex bg-white m-3 rounded-xl shadow-inner border border-gray-200 min-w-fit">
-              {weekDays.map((day, i) => {
+              <TimeColumn />
+              {weekDays.map((day) => {
                 const dayStr = day.toISOString().split('T')[0]
                 const dayInstances = scheduledInstances
                   .filter(inst => inst.dayDate === dayStr)
@@ -69,7 +71,6 @@ function App() {
                     dayDate={day}
                     instances={dayInstances}
                     onEdit={(task, instance) => setEditingData({ task, instance })}
-                    isFirstDay={i === 0}
                   />
                 )
               })}
