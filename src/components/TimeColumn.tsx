@@ -8,9 +8,9 @@ export function TimeColumn() {
   const hours = Array.from({ length: TOTAL_HOURS }, (_, i) => GRID_START + i)
 
   return (
-    <div className="w-12 flex-shrink-0 bg-white border-r border-gray-200 flex flex-col">
+    <div className="w-12 flex-shrink-0 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 flex flex-col">
       {/* Header spacer to align with day headers */}
-      <div className="h-16 border-b border-gray-200" />
+      <div className="h-16 border-b border-gray-200 dark:border-gray-700" />
 
       {/* Time labels */}
       <div style={{ height: TOTAL_HOURS * PX_PER_HOUR }} className="relative">
@@ -20,7 +20,7 @@ export function TimeColumn() {
             style={{ top: (h - GRID_START) * PX_PER_HOUR, height: PX_PER_HOUR }}
             className="absolute left-0 right-0"
           >
-            <span className="absolute -top-2 right-1 text-[10px] text-gray-400 font-medium leading-none">
+            <span className="absolute -top-2 right-1 text-[10px] text-gray-400 dark:text-gray-600 font-medium leading-none">
               {format(new Date().setHours(h, 0), 'HH:mm')}
             </span>
           </div>

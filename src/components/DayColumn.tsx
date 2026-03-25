@@ -50,10 +50,12 @@ export function DayColumn({ dayDate, instances, onEdit }: DayColumnProps) {
   const hours = Array.from({ length: TOTAL_HOURS }, (_, i) => GRID_START + i)
 
   return (
-    <div className="flex flex-col flex-1 border-r border-gray-200 last:border-r-0 min-w-[140px]">
+    <div className="flex flex-col flex-1 border-r border-gray-200 dark:border-gray-700 last:border-r-0 min-w-[140px]">
       {/* Day header */}
-      <div className={`p-2 text-center border-b border-gray-200 ${
-        isToday(dayDate) ? 'bg-blue-50 text-blue-700' : 'bg-gray-50 text-gray-600'
+      <div className={`p-2 text-center border-b border-gray-200 dark:border-gray-700 ${
+        isToday(dayDate)
+          ? 'bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-400'
+          : 'bg-gray-50 dark:bg-gray-900 text-gray-600 dark:text-gray-400'
       }`}>
         <div className="text-xs uppercase tracking-wider font-semibold">{format(dayDate, 'EEE')}</div>
         <div className={`text-lg ${isToday(dayDate) ? 'font-bold' : ''}`}>{format(dayDate, 'd')}</div>
@@ -63,7 +65,7 @@ export function DayColumn({ dayDate, instances, onEdit }: DayColumnProps) {
       <div
         ref={containerRef}
         style={{ height: TOTAL_HOURS * PX_PER_HOUR }}
-        className="relative flex-shrink-0 bg-white"
+        className="relative flex-shrink-0 bg-white dark:bg-gray-900"
         onPointerMove={handlePointerMove}
         onPointerLeave={handlePointerLeave}
       >
@@ -72,17 +74,17 @@ export function DayColumn({ dayDate, instances, onEdit }: DayColumnProps) {
           <div
             key={h}
             style={{ top: (h - GRID_START) * PX_PER_HOUR, height: PX_PER_HOUR }}
-            className="absolute left-0 right-0 border-b border-gray-200"
+            className="absolute left-0 right-0 border-b border-gray-200 dark:border-gray-700/60"
           >
             {/* Half-hour line */}
             <div
-              className="absolute left-0 right-0 border-b border-gray-100"
+              className="absolute left-0 right-0 border-b border-gray-100 dark:border-gray-800"
               style={{ top: PX_PER_HOUR / 2 }}
             />
           </div>
         ))}
 
-        {/* Drop ghost — shows where task will land */}
+        {/* Drop ghost */}
         {ghostStart !== null && (
           <div
             style={{
@@ -91,7 +93,7 @@ export function DayColumn({ dayDate, instances, onEdit }: DayColumnProps) {
               left: 2,
               right: 2,
             }}
-            className="absolute bg-blue-200/50 border-2 border-blue-400 border-dashed rounded-lg pointer-events-none z-10"
+            className="absolute bg-blue-200/50 dark:bg-blue-800/30 border-2 border-blue-400 dark:border-blue-500 border-dashed rounded-lg pointer-events-none z-10"
           />
         )}
 
